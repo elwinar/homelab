@@ -38,7 +38,7 @@
 
   networking = {
     hostName = "homelab";
-    firewall.allowedTCPPorts = [ 22 ];
+    firewall.allowedTCPPorts = [ 22 80 443 ];
   };
 
   # --- disk drivers in the initrd ---
@@ -59,7 +59,19 @@
   };
 
   services = {
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+    };
+    caddy = {
+      enable = true;
+      virtualHosts = {
+        "homelab.elwinar.com" = {
+          extraConfig = ''
+            respond "Hello world!"
+          '';
+        };
+      };
+    };
   };
 
   users = {
