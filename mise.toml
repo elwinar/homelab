@@ -7,3 +7,28 @@ _.file = ".env"
 [tools]
 terraform = "1.16.5"
 scaleway-cli = {version = "2.65.2", bin="scw"}
+
+[tasks."terraform:destroy"]
+run = '''
+terraform destroy
+'''
+
+[tasks."terraform:apply"]
+run = '''
+terraform apply
+'''
+
+[tasks."nixos:build"]
+run = '''
+nix build .#nixosConfigurations.homelab.config.system.build.toplevel
+'''
+
+[tasks."nixos:anywhere"]
+run = '''
+nix run github:nix-community/nixos-anywhere -- --flake .#homelab root@homelab.elwinar.com
+'''
+
+[tasks."nixos:rebuild"]
+run = '''
+nix run nixpkgs#nixos-rebuild -- switch --flake .#homelab --target-host root@homelab.elwinar.com
+'''

@@ -17,6 +17,14 @@ provider "scaleway" {
 resource "scaleway_instance_ip" "homelab" {
 }
 
+resource "scaleway_domain_record" "homelab" {
+  dns_zone = "elwinar.com"
+  name     = "homelab"
+  type     = "A"
+  data     = scaleway_instance_ip.homelab.address
+  ttl      = 60
+}
+
 moved {
   from = scaleway_instance_server.this
   to   = scaleway_instance_server.homelab
