@@ -85,10 +85,23 @@
     };
   };
 
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    age = {
+      sshKeyPaths = [];
+      keyFile = "/var/lib/sops-nix/keys.txt";
+      generateKey = false;
+    };
+    secrets = {
+      hello = {};
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     helix
     git
     curl
     glances
+    tree
   ];
 }

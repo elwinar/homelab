@@ -1,0 +1,9 @@
+keys:
+  - &homelab age1cqdn8zrg3cq0pcgyf393smmyh32n4rsm8tcr906ellraxxrc0d0svlnmz7
+  - &saphire age14v23unnvp82cmeamwyf3dwqfxrez9vshyr5vvg95375jv95pmvpsne7gqj
+creation_rules:
+  - path_regex: secrets.yaml
+    key_groups:
+    - age:
+      - *homelab
+      - *saphire
