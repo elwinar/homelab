@@ -1,0 +1,6 @@
+*.tfstate
+*.tfstate.backup
+.env
+.terraform/
+extra-files/
+result
