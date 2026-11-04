@@ -22,13 +22,17 @@ resource "scaleway_domain_record" "homelab" {
   name     = "homelab"
   type     = "A"
   data     = scaleway_instance_ip.homelab.address
-  ttl      = 60
+  ttl      = 3600
 }
 
-moved {
-  from = scaleway_instance_server.this
-  to   = scaleway_instance_server.homelab
+resource "scaleway_domain_record" "lldap" {
+  dns_zone = "elwinar.com"
+  name     = "lldap"
+  type     = "A"
+  data     = scaleway_instance_ip.homelab.address
+  ttl      = 3600
 }
+
 resource "scaleway_instance_server" "homelab" {
   type  = "DEV1-S"
   name  = "homelab"

@@ -58,30 +58,21 @@
     };
   };
 
-  services = {
-    openssh = {
-      enable = true;
-    };
-    caddy = {
-      enable = true;
-      virtualHosts = {
-        "homelab.elwinar.com" = {
-          extraConfig = ''
-            respond "Hello world!"
-          '';
-        };
-      };
-    };
-  };
-
   users = {
     mutableUsers = false;
     users = {
-      root = {
+      "root" = {
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILXU1ZD/EvrcltO3JMQ7HXNACLPk2AyYulutwqQI6Bda"
         ];
       };
+      "lldap" = {
+        isSystemUser = true;
+        group = "lldap";
+      };
+    };
+    groups = {
+      "lldap" = {};
     };
   };
 
@@ -93,7 +84,12 @@
       generateKey = false;
     };
     secrets = {
-      hello = {};
+      "lldap/root/password" = {
+        owner = "lldap";
+        group = "lldap";
+        mode = "0400";
+        restartUnits = ["lldap.service"];
+      };
     };
   };
 
@@ -104,4 +100,42 @@
     glances
     tree
   ];
+
+  services = {
+
+    openssh = {
+      enable = true;
+    };
+
+    caddy = {
+      enable = true;
+      virtualHosts = {
+        "homelab.elwinar.com" = {
+          extraConfig = ''
+            respond "Hello world!"
+          '';
+        };
+        "lldap.elwinar.com" = {
+          extraConfig = ''
+            reverse_proxy 127.0.0.1:17170
+          '';
+        };
+      };
+    };
+
+    lldap = {
+      enable = true;
+      settings = {
+        ldap_host = "127.0.0.1";
+        http_host = "127.0.0.1";
+        http_port = 17170;
+        http_url = "https://lldap.elwinar.com";
+        ldap_base_dn = "dc=homelab";
+        ldap_user_dn = "root";
+        ldap_user_pass_file = "/run/secrets/lldap/root/password";
+        force_ldap_user_pass_reset = "always";
+      };
+    };
+
+  };
 }
