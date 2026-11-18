@@ -5,7 +5,7 @@ experimental = true
 _.file = ".env"
 
 [tools]
-terraform = "1.16.5"
+terraform = "1.17.1"
 scaleway-cli = {version = "2.65.2", bin="scw"}
 age = "1.3.2"
 sops = "3.13.3"

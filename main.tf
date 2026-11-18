@@ -33,10 +33,35 @@ resource "scaleway_domain_record" "lldap" {
   ttl      = 3600
 }
 
+resource "scaleway_domain_record" "mail" {
+  dns_zone = "elwinar.com"
+  name     = "mail"
+  type     = "A"
+  data     = scaleway_instance_ip.homelab.address
+  ttl      = 60
+}
+
+resource "scaleway_domain_record" "mx" {
+  dns_zone = "elwinar.com"
+  name     = "@"
+  type     = "MX"
+  data     = "mail.elwinar.com."
+  ttl      = 60
+  priority = 10
+}
+
+resource "scaleway_instance_security_group" "homelab" {
+  name                    = "homelab"
+  enable_default_security = false
+  description             = "homelab security group"
+  inbound_default_policy  = "accept"
+}
+
 resource "scaleway_instance_server" "homelab" {
-  type  = "DEV1-S"
-  name  = "homelab"
-  image = "ubuntu_jammy"
-  ip_id = scaleway_instance_ip.homelab.id
+  type              = "DEV1-S"
+  name              = "homelab"
+  image             = "ubuntu_jammy"
+  ip_id             = scaleway_instance_ip.homelab.id
+  security_group_id = scaleway_instance_security_group.homelab.id
 }
 
