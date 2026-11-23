@@ -38,16 +38,24 @@ resource "scaleway_domain_record" "mail" {
   name     = "mail"
   type     = "A"
   data     = scaleway_instance_ip.homelab.address
-  ttl      = 60
+  ttl      = 3600
+}
+
+resource "scaleway_domain_record" "jellyfin" {
+  dns_zone = "elwinar.com"
+  name     = "jellyfin"
+  type     = "A"
+  data     = scaleway_instance_ip.homelab.address
+  ttl      = 3600
 }
 
 resource "scaleway_domain_record" "mx" {
   dns_zone = "elwinar.com"
   name     = "@"
   type     = "MX"
-  data     = "mail.elwinar.com."
-  ttl      = 60
   priority = 10
+  data     = "mail.elwinar.com."
+  ttl      = 3600
 }
 
 resource "scaleway_instance_security_group" "homelab" {

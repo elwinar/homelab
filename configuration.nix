@@ -151,6 +151,11 @@
             reverse_proxy 127.0.0.1:8080
           '';
         };
+        "jellyfin.elwinar.com" = {
+          extraConfig = ''
+            reverse_proxy 127.0.0.1:8096
+          '';
+        };
       };
     };
 
@@ -168,6 +173,10 @@
       };
     };
 
+    jellyfin = {
+      enable = true;
+    };
+    
     stalwart = {
       enable = true;
       stateVersion = "26.05";
